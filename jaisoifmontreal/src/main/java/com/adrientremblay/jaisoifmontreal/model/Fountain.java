@@ -5,6 +5,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.locationtech.jts.geom.Point;
+
 import java.io.Serializable;
 
 @Entity
@@ -12,30 +15,28 @@ import java.io.Serializable;
 public class Fountain implements Serializable {
     @Id
     @Column(nullable = false, updatable = false)
-    private Long id;
+    private Integer id;
     private String borough;
     private String placeName;
     private String placeType;
     private String intersection;
     private String notes;
-    private Double latitude;
-    private Double Longitude;
+    private Point geom;
 
-    public Fountain(String borough, String placeName, String placeType, String intersection, String notes, Double latitude, Double longitude) {
+    public Fountain(String borough, String placeName, String placeType, String intersection, String notes, Point geom) {
         this.borough = borough;
         this.placeName = placeName;
         this.placeType = placeType;
         this.intersection = intersection;
         this.notes = notes;
-        this.latitude = latitude;
-        Longitude = longitude;
+        this.geom = geom;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -79,20 +80,21 @@ public class Fountain implements Serializable {
         this.notes = notes;
     }
 
-    public Double getLatitude() {
-        return latitude;
+    public Point getGeom() {
+        return geom;
     }
 
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
+    public void setGeom(Point geom) {
+        this.geom = geom;
     }
 
-    public Double getLongitude() {
-        return Longitude;
+    // Optional convenience methods
+    public double getLatitude() {
+        return geom.getY();
     }
 
-    public void setLongitude(Double longitude) {
-        Longitude = longitude;
+    public double getLongitude() {
+        return geom.getX();
     }
 
     @Override
@@ -104,8 +106,6 @@ public class Fountain implements Serializable {
                 ", placeType='" + placeType + '\'' +
                 ", intersection='" + intersection + '\'' +
                 ", notes='" + notes + '\'' +
-                ", latitude=" + latitude +
-                ", Longitude=" + Longitude +
                 '}';
     }
 }
