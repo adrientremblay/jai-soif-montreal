@@ -21,19 +21,24 @@ repositories {
 dependencies {
     // Spring Boot
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-    // Postgres
-    implementation 'org.postgresql:postgresql'
-    // Hibernate
-    //implementation 'org.hibernate:hibernate-core:6.2.7.Final'
-    implementation 'org.hibernate.orm:hibernate-spatial'
-    implementation 'com.bedatadriven:jackson-datatype-jts:2.2'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 
-    implementation 'org.locationtech.jts:jts-core:1.20.0'
+    // PostgreSQL
+    implementation 'org.postgresql:postgresql:42.6.0' // latest driver
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
-	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // Hibernate + Spatial
+    implementation 'org.hibernate.orm:hibernate-spatial:7.1.8.Final' // match your hibernate-core
+    implementation 'org.hibernate.orm:hibernate-core:7.1.8.Final'
+
+    // JTS
+    implementation 'org.n52.jackson:jackson-datatype-jts:1.2.10'
+
+    // Jackson JTS module
+    implementation 'com.bedatadriven:jackson-datatype-jts:2.4'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {

@@ -21,6 +21,7 @@ public class Fountain implements Serializable {
     private String placeType;
     private String intersection;
     private String notes;
+    @Column(columnDefinition = "geometry(Point,4326)")
     private Point geom;
 
     // === Hibernate requires this ===
@@ -84,13 +85,13 @@ public class Fountain implements Serializable {
         this.notes = notes;
     }
 
-    public Point getGeom() {
-        return geom;
-    }
-
-    public void setGeom(Point geom) {
-        this.geom = geom;
-    }
+//    public Point getGeom() {
+//        return geom;
+//    }
+//
+//    public void setGeom(Point geom) {
+//        this.geom = geom;
+//    }
 
     // Optional convenience methods
     public double getLatitude() {
@@ -101,15 +102,15 @@ public class Fountain implements Serializable {
         return geom.getX();
     }
 
-    @Override
-    public String toString() {
-        return "Fountain{" +
-                "id=" + id +
-                ", borough='" + borough + '\'' +
-                ", placeName='" + placeName + '\'' +
-                ", placeType='" + placeType + '\'' +
-                ", intersection='" + intersection + '\'' +
-                ", notes='" + notes + '\'' +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Fountain{" +
+//                "id=" + id +
+//                ", borough='" + borough + '\'' +
+//                ", placeName='" + placeName + '\'' +
+//                ", placeType='" + placeType + '\'' +
+//                ", intersection='" + intersection + '\'' +
+//                ", notes='" + notes + '\'' +
+//                '}';
+//    }
 }
