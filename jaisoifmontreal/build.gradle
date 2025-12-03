@@ -19,16 +19,18 @@ repositories {
 }
 
 dependencies {
-    // Hibernate ORM (if not already included via Spring Boot starter)
-    implementation 'org.hibernate:hibernate-core:6.2.7.Final'
-    // Hibernate Spatial
-    implementation 'org.hibernate.orm:hibernate-spatial:6.2.7.Final'
-    // JTS (Java Topology Suite) - used for Geometry types
+    // Spring Boot
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    // Postgres
+    implementation 'org.postgresql:postgresql'
+    // Hibernate
+    //implementation 'org.hibernate:hibernate-core:6.2.7.Final'
+    //implementation 'org.hibernate.orm:hibernate-spatial:6.2.7.Final'
+
+
     implementation 'org.locationtech.jts:jts-core:1.20.0'
 
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-    implementation 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
