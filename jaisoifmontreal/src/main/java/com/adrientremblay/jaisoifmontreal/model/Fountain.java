@@ -23,6 +23,10 @@ public class Fountain implements Serializable {
     private String notes;
     private Point geom;
 
+    // === Hibernate requires this ===
+    protected Fountain() {
+    }
+
     public Fountain(String borough, String placeName, String placeType, String intersection, String notes, Point geom) {
         this.borough = borough;
         this.placeName = placeName;

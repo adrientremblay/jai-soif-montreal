@@ -20,7 +20,7 @@ public class FountainResource {
         this.fountainService = fountainService;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Fountain>> getAllFountains() {
         return new ResponseEntity<>(fountainService.findAllFountains(), HttpStatus.OK);
     }
