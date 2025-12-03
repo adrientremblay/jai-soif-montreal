@@ -1,5 +1,6 @@
 package com.adrientremblay.jaisoifmontreal.service;
 
+import com.adrientremblay.jaisoifmontreal.exception.FountainNotFoundException;
 import com.adrientremblay.jaisoifmontreal.model.Fountain;
 import com.adrientremblay.jaisoifmontreal.repo.FountainRepo;
 import org.springframework.beans.factory.annotation.Autowired;
