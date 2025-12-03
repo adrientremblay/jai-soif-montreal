@@ -3,10 +3,12 @@ package com.adrientremblay.jaisoifmontreal.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.io.Serializable;
 
 @Entity
+@Table(name = "fountains")
 public class Fountain implements Serializable {
     @Id
     @Column(nullable = false, updatable = false)
@@ -91,5 +93,19 @@ public class Fountain implements Serializable {
 
     public void setLongitude(Double longitude) {
         Longitude = longitude;
+    }
+
+    @Override
+    public String toString() {
+        return "Fountain{" +
+                "id=" + id +
+                ", borough='" + borough + '\'' +
+                ", placeName='" + placeName + '\'' +
+                ", placeType='" + placeType + '\'' +
+                ", intersection='" + intersection + '\'' +
+                ", notes='" + notes + '\'' +
+                ", latitude=" + latitude +
+                ", Longitude=" + Longitude +
+                '}';
     }
 }
