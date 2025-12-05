@@ -4,6 +4,7 @@ import { PLATFORM_ID } from '@angular/core';
 import { Fountain } from '../fountain';
 import { FountainService } from '../fountain.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import mapboxgl from 'mapbox-gl';
 
 @Component({
   selector: 'app-map', 
@@ -30,11 +31,6 @@ export class MapComponent implements OnInit, OnDestroy {
       });
 
       this.getFountains();
-      this.fountains.forEach(fountain => {
-        new mapboxgl.Marker()
-          .setLngLat([fountain.longitude, fountain.lattitude])
-          .addTo(this.map);
-      })
     }
   }
 
@@ -44,6 +40,12 @@ export class MapComponent implements OnInit, OnDestroy {
     this.fountainService.getFountains().subscribe(
       (response: Fountain[]) => {
         this.fountains = response;
+        console.log(this.fountains.length);
+        this.fountains.forEach(fountain => {
+          new mapboxgl.Marker()
+            .setLngLat([fountain.longitude, fountain.latitude])
+            .addTo(this.map);
+        })
       },
       (error: HttpErrorResponse) => {
         console.error(error.message);

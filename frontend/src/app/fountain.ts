@@ -5,6 +5,6 @@ export interface Fountain {
     placeType: string;
     intersection: string;
     notes: string;
-    lattitude: number;
+    latitude: number;
     longitude: number;
 }
