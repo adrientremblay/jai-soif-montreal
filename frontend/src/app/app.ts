@@ -27,7 +27,7 @@ export class App implements OnInit {
         this.fountains = response;
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        console.error(error.message);
       }
     )
   }

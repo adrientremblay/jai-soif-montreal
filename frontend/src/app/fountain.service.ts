@@ -7,11 +7,11 @@ import { Injectable } from "@angular/core";
     providedIn: 'root'
 })
 export class FountainService {
-    private apiServerUrl = '';
+    private apiServerUrl = 'http://localhost:8080';
 
     constructor(private http: HttpClient) {}
 
     public getFountains(): Observable<Fountain[]> {
-        return this.http.get<any>(this.apiServerUrl+']/fountain/all');
+        return this.http.get<any>(this.apiServerUrl+'/fountain/all');
     }
 }
