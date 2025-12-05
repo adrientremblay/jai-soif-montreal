@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { Fountain } from './fountain';
 import { FountainService } from './fountain.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MapComponent } from './map/map';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, MapComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
