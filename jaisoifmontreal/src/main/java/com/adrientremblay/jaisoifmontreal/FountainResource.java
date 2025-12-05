@@ -1,12 +1,14 @@
 package com.adrientremblay.jaisoifmontreal;
 
 import com.adrientremblay.jaisoifmontreal.model.Fountain;
+import com.adrientremblay.jaisoifmontreal.model.GeoJsonPoint;
 import com.adrientremblay.jaisoifmontreal.service.FountainService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/fountain")
@@ -19,8 +21,16 @@ public class FountainResource {
 
     @CrossOrigin
     @GetMapping("/all")
-    public ResponseEntity<List<Fountain>> getAllFountains() {
-        return new ResponseEntity<>(fountainService.findAllFountains(), HttpStatus.OK);
+    public ResponseEntity<List<GeoJsonPoint>> getAllFountains() {
+        List<Fountain> fountains = fountainService.findAllFountains();
+
+        List<GeoJsonPoint> points = fountains.stream().map(fountain -> new GeoJsonPoint(
+                fountain.getLongitude(),
+                fountain.getLatitude(),
+                Map.of("id", fountain.getId(), "borough", fountain.getBorough() /*, "placeName", fountain.getPlaceName(), "placeType", fountain.getPlaceType(), "intersection", fountain.getIntersection(), "notes", fountain.getNotes()*/)
+        )).toList();
+
+        return new ResponseEntity<>(points, HttpStatus.OK);
     }
 
     @CrossOrigin

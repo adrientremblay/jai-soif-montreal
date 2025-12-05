@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { Fountain } from "./fountain";
+import { GeoJsonFeature } from "./geojsonfeature";
 import { Injectable } from "@angular/core";
 
 @Injectable({
@@ -11,7 +11,7 @@ export class FountainService {
 
     constructor(private http: HttpClient) {}
 
-    public getFountains(): Observable<Fountain[]> {
+    public getFountains(): Observable<GeoJsonFeature[]> {
         return this.http.get<any>(this.apiServerUrl+'/fountain/all');
     }
 }

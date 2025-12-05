@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
-import { Fountain } from '../fountain';
+import { GeoJsonFeature } from '../geojsonfeature';
 import { FountainService } from '../fountain.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import mapboxgl from 'mapbox-gl';
@@ -16,7 +16,7 @@ export class MapComponent implements OnInit, OnDestroy {
   @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef;
   map: any;
   private platformId = inject(PLATFORM_ID);
-  public fountains: Fountain[] = [];
+  public featuresList: GeoJsonFeature[] = [];
 
   async ngOnInit() {
     if (isPlatformBrowser(this.platformId)) { // SSR check to ensure this runs in the browser as GL JS requires a browser environment
@@ -30,7 +30,9 @@ export class MapComponent implements OnInit, OnDestroy {
         zoom: 11, // Initial zoom level
       });
 
-      this.getFountains();
+      this.map.on('load', () => {
+        this.getFountains();
+      });
     }
   }
 
@@ -38,15 +40,34 @@ export class MapComponent implements OnInit, OnDestroy {
 
   public getFountains(): void {
     this.fountainService.getFountains().subscribe(
-      (response: Fountain[]) => {
-        this.fountains = response;
-        console.log(this.fountains.length);
-        this.fountains.forEach(fountain => {
-          new mapboxgl.Marker()
-            .setLngLat([fountain.longitude, fountain.latitude])
-            .addTo(this.map);
-        })
-      },
+      (response: GeoJsonFeature[]) => {
+        this.featuresList = response;
+
+        this.map.addSource('my-data', {
+            "type": "geojson",
+            "data": {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [-73.589462375603, 45.5920117541965]
+                },
+                "properties": {
+                    "title": "Mapbox DC",
+                    "marker-symbol": "monument"
+                }
+            }
+        });
+
+        this.map.addLayer({
+          id: 'fountains',
+          type: 'circle',
+          source: 'my-data',
+          paint: {
+            'circle-radius': 6,
+            'circle-color': '#B42222'
+          }      
+        });
+    },
       (error: HttpErrorResponse) => {
         console.error(error.message);
       }
