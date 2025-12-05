@@ -46,15 +46,8 @@ export class MapComponent implements OnInit, OnDestroy {
         this.map.addSource('my-data', {
             "type": "geojson",
             "data": {
-                "type": "Feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [-73.589462375603, 45.5920117541965]
-                },
-                "properties": {
-                    "title": "Mapbox DC",
-                    "marker-symbol": "monument"
-                }
+                "type": "FeatureCollection",
+                "features" : this.featuresList, 
             }
         });
 
@@ -64,7 +57,7 @@ export class MapComponent implements OnInit, OnDestroy {
           source: 'my-data',
           paint: {
             'circle-radius': 6,
-            'circle-color': '#B42222'
+            'circle-color': '#2222B4'
           }      
         });
 
@@ -76,7 +69,7 @@ export class MapComponent implements OnInit, OnDestroy {
             handler: (e: any) => {
                 // Copy coordinates array.
                 const coordinates = e.feature.geometry.coordinates.slice();
-                const description = e.feature.properties.title;
+                const description = e.feature.properties.borough;
 
                 new mapboxgl.Popup()
                     .setLngLat(coordinates)
