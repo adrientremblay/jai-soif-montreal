@@ -4,7 +4,7 @@ import { PLATFORM_ID } from '@angular/core';
 import { GeoJsonFeature } from '../geojsonfeature';
 import { FountainService } from '../fountain.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import mapboxgl from 'mapbox-gl';
+import mapboxgl, { MapEvent } from 'mapbox-gl';
 
 @Component({
   selector: 'app-map', 
@@ -67,6 +67,24 @@ export class MapComponent implements OnInit, OnDestroy {
             'circle-color': '#B42222'
           }      
         });
+
+        // When a click event occurs on a feature in the places layer, open a popup at the
+        // location of the feature, with description HTML from its properties.
+        this.map.addInteraction('places-click-interaction', {
+            type: 'click',
+            target: { layerId: 'fountains' },
+            handler: (e: any) => {
+                // Copy coordinates array.
+                const coordinates = e.feature.geometry.coordinates.slice();
+                const description = e.feature.properties.title;
+
+                new mapboxgl.Popup()
+                    .setLngLat(coordinates)
+                    .setHTML(description)
+                    .addTo(this.map);
+            }
+        });
+
     },
       (error: HttpErrorResponse) => {
         console.error(error.message);
