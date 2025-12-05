@@ -41,59 +41,26 @@ public class Fountain implements Serializable {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getBorough() {
         return borough;
     }
 
-    public void setBorough(String borough) {
-        this.borough = borough;
-    }
-
     public String getPlaceName() {
-        return placeName;
-    }
-
-    public void setPlaceName(String placeName) {
-        this.placeName = placeName;
+        return placeName != null ? placeName : "";
     }
 
     public String getPlaceType() {
-        return placeType;
-    }
-
-    public void setPlaceType(String placeType) {
-        this.placeType = placeType;
+        return placeType != null ? placeType : "";
     }
 
     public String getIntersection() {
-        return intersection;
-    }
-
-    public void setIntersection(String intersection) {
-        this.intersection = intersection;
+        return intersection != null ? intersection : "";
     }
 
     public String getNotes() {
-        return notes;
+        return notes != null ? notes : "";
     }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-//    public Point getGeom() {
-//        return geom;
-//    }
-//
-//    public void setGeom(Point geom) {
-//        this.geom = geom;
-//    }
-
-    // Optional convenience methods
     public double getLatitude() {
         return geom.getY();
     }
@@ -102,15 +69,4 @@ public class Fountain implements Serializable {
         return geom.getX();
     }
 
-//    @Override
-//    public String toString() {
-//        return "Fountain{" +
-//                "id=" + id +
-//                ", borough='" + borough + '\'' +
-//                ", placeName='" + placeName + '\'' +
-//                ", placeType='" + placeType + '\'' +
-//                ", intersection='" + intersection + '\'' +
-//                ", notes='" + notes + '\'' +
-//                '}';
-//    }
 }
