@@ -92,11 +92,10 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private formatDescriptionFromFountainProperties(fountainProperties: any): string {
-    console.log(Object.entries(fountainProperties));
     let description : string = Object.entries(fountainProperties)
       .filter((value: [string, unknown]) => value[1] != "")
-      .map((value: [string, unknown]) => value[0] + ": " + value[1])
-      .join("<br /><br />");
+      .map((value: [string, unknown]) => "<strong>"+value[0] + "</strong>: " + value[1])
+      .join("<br />");
 
 
     return description;
