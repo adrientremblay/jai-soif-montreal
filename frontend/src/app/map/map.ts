@@ -5,6 +5,8 @@ import { GeoJsonFeature } from '../geojsonfeature';
 import { FountainService } from '../fountain.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import mapboxgl, { MapEvent } from 'mapbox-gl';
+import { FountainProperties } from '../fountainproperties';
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-map', 
@@ -16,6 +18,7 @@ export class MapComponent implements OnInit, OnDestroy {
   @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef;
   map: any;
   private platformId = inject(PLATFORM_ID);
+  private translate = inject(TranslateService);
   public featuresList: GeoJsonFeature[] = [];
 
   async ngOnInit() {
@@ -91,12 +94,12 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
 
-  private formatDescriptionFromFountainProperties(fountainProperties: any): string {
-    let description : string = Object.entries(fountainProperties)
-      .filter((value: [string, unknown]) => value[1] != "")
-      .map((value: [string, unknown]) => "<strong>"+value[0] + "</strong>: " + value[1])
-      .join("<br />");
-
+  private formatDescriptionFromFountainProperties(fountainProperties: FountainProperties): string {
+    let description : string = "";
+    
+    if (fountainProperties['Place Name']) {
+      description += "<strong>"+this.translate.instant('property.placename')+"</strong>: " + fountainProperties["Place Name"];
+    }
 
     return description;
   }

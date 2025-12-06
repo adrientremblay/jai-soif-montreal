@@ -1,10 +1,18 @@
 {
   "app": {
+    "title": "Carte de la soif de Montréal",
     "tagline": "Une carte interactive des fontaines à eau à Montréal",
     "languagepicker": "Choisissez une langue:"
   },
   "language": {
     "english": "Anglais",
     "french": "Français"
+  },
+  "property": {
+    "borough": "Arrondissement",
+    "placename": "Nom de lieu",
+    "placetype": "Type de lieu",
+    "intersection": "Intersection",
+    "notes": "Notes"
   }
 }

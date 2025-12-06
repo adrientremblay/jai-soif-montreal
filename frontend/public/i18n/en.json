@@ -1,10 +1,18 @@
 {
   "app": {
+    "title": "Montreal Thirst Map",
     "tagline": "An interactive map of drinking fountains in Montreal",
     "languagepicker": "Choose language:"
   },
   "language": {
     "english": "English",
     "french": "French"
+  },
+  "property": {
+    "borough": "Borough",
+    "placename": "Place Name",
+    "placetype": "Place Type",
+    "intersection": "Intersection",
+    "notes": "Notes"
   }
 }

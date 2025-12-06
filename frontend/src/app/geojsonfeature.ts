@@ -1,5 +1,7 @@
+import { FountainProperties } from "./fountainproperties";
+
 export interface GeoJsonFeature {
     geometry: any;
-    properties: any;
+    properties: FountainProperties;
     type: string;
 }
