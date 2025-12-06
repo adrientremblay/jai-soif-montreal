@@ -18,7 +18,7 @@ export class MapComponent implements OnInit, OnDestroy {
   @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef;
   map: any;
   private platformId = inject(PLATFORM_ID);
-  private translate = inject(TranslateService);
+  private translate: TranslateService = inject(TranslateService);
   public featuresList: GeoJsonFeature[] = [];
 
   async ngOnInit() {
@@ -96,10 +96,23 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private formatDescriptionFromFountainProperties(fountainProperties: FountainProperties): string {
     let description : string = "";
-    
-    if (fountainProperties['Place Name']) {
-      description += "<strong>"+this.translate.instant('property.placename')+"</strong>: " + fountainProperties["Place Name"];
-    }
+
+    if (fountainProperties['Borough'])
+      description += "<strong>"+this.translate.instant('property.borough')+"</strong>: " + fountainProperties["Borough"] + "<br />";
+    if (fountainProperties['Intersection'])
+      description += "<strong>"+this.translate.instant('property.intersection')+"</strong>: " + fountainProperties["Intersection"] + "<br />";
+    if (fountainProperties['Place Name'])
+      description += "<strong>"+this.translate.instant('property.placename')+"</strong>: " + fountainProperties["Place Name"] + "<br />";
+    if (fountainProperties['Place Type'])
+      if (this.translate.getCurrentLang() == 'en')
+        description += "<strong>"+this.translate.instant('property.placetype')+"</strong>: " + fountainProperties["Place Type"] + "<br />";
+      else
+        description += "<strong>"+this.translate.instant('property.placetype')+"</strong>: " + fountainProperties["Place Type French"] + "<br />";
+    if (fountainProperties['Notes'])
+      if (this.translate.getCurrentLang() == 'en')
+        description += "<strong>"+this.translate.instant('property.placetype')+"</strong>: " + fountainProperties["Notes"] + "<br />";
+      else
+        description += "<strong>"+this.translate.instant('property.placetype')+"</strong>: " + fountainProperties["Notes French"] + "<br />";
 
     return description;
   }
