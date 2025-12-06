@@ -1,5 +1,10 @@
 {
   "app": {
-    "tagline": "Une carte interactive des fontaines à eau à Montréal"
+    "tagline": "Une carte interactive des fontaines à eau à Montréal",
+    "languagepicker": "Choisissez une langue:"
+  },
+  "language": {
+    "english": "Anglais",
+    "french": "Français"
   }
 }
