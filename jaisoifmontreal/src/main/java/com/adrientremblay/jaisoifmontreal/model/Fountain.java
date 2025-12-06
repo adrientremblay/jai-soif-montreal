@@ -23,18 +23,24 @@ public class Fountain implements Serializable {
     private String notes;
     @Column(columnDefinition = "geometry(Point,4326)")
     private Point geom;
+    @Column(name = "place_type_fr")
+    private String placeTypeFrench;
+    @Column(name = "notes_fr")
+    private String notesFrench;
 
     // === Hibernate requires this ===
     protected Fountain() {
     }
 
-    public Fountain(String borough, String placeName, String placeType, String intersection, String notes, Point geom) {
+    public Fountain(String borough, String placeName, String placeType, String intersection, String notes, Point geomm, String placeTypeFrench, String notesFrench) {
         this.borough = borough;
         this.placeName = placeName;
         this.placeType = placeType;
         this.intersection = intersection;
         this.notes = notes;
         this.geom = geom;
+        this.placeTypeFrench = placeTypeFrench;
+        this.notesFrench = notesFrench;
     }
 
     public Integer getId() {
@@ -69,4 +75,11 @@ public class Fountain implements Serializable {
         return geom.getX();
     }
 
+    public String getPlaceTypeFrench() {
+        return placeTypeFrench;
+    }
+
+    public String getNotesFrench() {
+        return notesFrench;
+    }
 }
