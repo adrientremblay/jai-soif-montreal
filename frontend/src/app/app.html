@@ -2,5 +2,12 @@
 
 <div class = "overlay">
   <h1>jaisoifmontreal.com</h1>
-  <p><i>An interactive map of drinking fountains in Montreal</i></p>
+  <p><i>{{'app.tagline' | translate}}</i></p>
+  <div class="language-picker-area">
+    <div class="picker-label">choose language</div>
+    <select (change)="selectLanguage($event)" class="language-picker">
+      <option value="en">English</option>
+      <option value="fr">French</option>
+    </select>
+  </div>
 </div>

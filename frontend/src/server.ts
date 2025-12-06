@@ -6,6 +6,7 @@ import {
 } from '@angular/ssr/node';
 import express from 'express';
 import { join } from 'node:path';
+import 'zone.js';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
