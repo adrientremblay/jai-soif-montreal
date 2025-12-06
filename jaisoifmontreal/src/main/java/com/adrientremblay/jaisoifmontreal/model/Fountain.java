@@ -76,10 +76,10 @@ public class Fountain implements Serializable {
     }
 
     public String getPlaceTypeFrench() {
-        return placeTypeFrench;
+        return placeTypeFrench != null ? placeTypeFrench : "";
     }
 
     public String getNotesFrench() {
-        return notesFrench;
+        return notesFrench != null ? notesFrench : "";
     }
 }

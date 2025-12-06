@@ -27,7 +27,7 @@ public class FountainResource {
         List<GeoJsonPoint> points = fountains.stream().map(fountain -> new GeoJsonPoint(
                 fountain.getLongitude(),
                 fountain.getLatitude(),
-                Map.of("id", fountain.getId(), "borough", fountain.getBorough() , "placeName", fountain.getPlaceName(), "placeType", fountain.getPlaceType(),"intersection", fountain.getIntersection(), "notes", fountain.getNotes())
+                Map.of("Borough", fountain.getBorough() , "Place Name", fountain.getPlaceName(), "Place Type", fountain.getPlaceType(),"Intersection", fountain.getIntersection(), "Notes", fountain.getNotes(), "Place Type French", fountain.getPlaceTypeFrench(), "Notes French", fountain.getNotesFrench())
         )).toList();
 
         return new ResponseEntity<>(points, HttpStatus.OK);
