@@ -25,9 +25,10 @@ export class MapComponent implements OnInit, OnDestroy {
     if (isPlatformBrowser(this.platformId)) { // SSR check to ensure this runs in the browser as GL JS requires a browser environment
       const mapboxgl = (await import('mapbox-gl')).default // dynamically import mapbox-gl as the default export
 
+      console.log(import.meta.env['NG_APP_MAPBOX_API_TOKEN']);
       // Create a new map instance
       this.map = new mapboxgl.Map({
-        accessToken: 'pk.eyJ1IjoiYWRyaWVudHJlbWJsYXkiLCJhIjoiY21pZGkzZmhqMDZydjJqcG51cTV0cDMzOCJ9.uBD-0FwBXgdibDCiSF4Hlw',
+        accessToken: import.meta.env.NG_APP_MAPBOX_API_TOKEN,
         container: this.mapContainer.nativeElement, // Reference to the map container element
         center: [-73.5674, 45.5019, ], // Center coordinates for map over the continental US
         zoom: 11, // Initial zoom level
