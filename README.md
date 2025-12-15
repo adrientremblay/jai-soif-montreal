@@ -9,7 +9,22 @@ I chose to build this application using a very corporate tech stack. Java Spring
 
 ## The Data
 
-The data was taken taken from the [city of Montreal's Donees Ouverts site](https://donnees.montreal.ca/dataset/fontaines-a-boire-eau-exterieures). The data is simply downloadable as a .CSV file (frustratingly some other "public" datasets from the city of Montreal are not likely due to privacy reasons). The dataset con...
+The data was taken taken from the [city of Montreal's Donees Ouverts site](https://donnees.montreal.ca/dataset/fontaines-a-boire-eau-exterieures). The data is simply downloadable as a .CSV file (frustratingly some other "public" datasets from the city of Montreal are not likely due to privacy reasons). 
+
+The dataset contains the following columns that had uable data:
+- borough
+- nearby park or place
+- type of place nearby
+- intersection
+- notes
+- longitude
+- lattitude
+
+The first things I did was manually translate the dataset from french to english using search and replace features. My intention wass to handle french localization later. I then enabled the [PostGIS](https://postgis.net/) extension for my Postgresql database because I wanted to store longitude and lattitude in once column. This didn't end up being super necessary as the app doesn't make use of any built in functions to for example calculate distances between points. I then used the COPYT command to import the data from the CSV file into a temporary table and then a permanent one with some extra fluff to combine the longitude and lattitude into the PostGIS Point column.
+
+## The Backend
+
+
 
 ## How I handled localization
 
