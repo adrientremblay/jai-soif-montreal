@@ -24,7 +24,17 @@ The first things I did was manually translate the dataset from french to english
 
 ## The Backend
 
+The backend is uper simple. Ultimately, the only API request I need to serve in the final application is one that returns data for all fountains in the system. Setting up requests to delete or insert records from the database is superflous. Even though, I eventually want to implement a form that allows users to submit fountains that will then only enter the database when I physically verify the existence of the water fountain in real life.
 
+The key components of the application are:
+- FountainResource (RestController)
+- FountainService (Service)
+- FountainRepo (implements JpaRepository)
+- Fountain (Entity)
+
+So the Fountain class is a Spring Entity that has fields analagous to the table schema in my Postgres database. [Hibernate](https://docs.spring.io/spring-framework/reference/data-access/orm/hibernate.html) (a module of Spring) then handles the reading of my table and the mapping of them to objects of this class. The FountainRepo then implements a function findAll() that is called and reutnre by a function i created in the FountainService class which is in turn called by the FountainResource. That's pretty much it.
+
+## Isues with point
 
 ## How I handled localization
 
