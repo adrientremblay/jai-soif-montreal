@@ -34,8 +34,18 @@ The key components of the application are:
 
 So the Fountain class is a Spring Entity that has fields analagous to the table schema in my Postgres database. [Hibernate](https://docs.spring.io/spring-framework/reference/data-access/orm/hibernate.html) (a module of Spring) then handles the reading of my table and the mapping of them to objects of this class. The FountainRepo then implements a function findAll() that is called and reutnre by a function i created in the FountainService class which is in turn called by the FountainResource. That's pretty much it.
 
-## Isues with point
+## Issues with points and GeoJSON mapping
+
+I had some issues with the JSON encoding for the coordinates for each water fountain. Ultimately the root cause of the issue was that the JsonEncoder library [JTS](https://locationtech.github.io/jts/javadoc/org/locationtech/jts/geom/Point.html). For reasons beyond my comprehension JTS does not support spacial points on a sphere (like the earth) only those on a plane. So my PostGIS column type for my coordinates was wrong in my database. I had to change it.
+
+This issue was sidestepped by another issue. [Mapbox](https://www.mapbox.com/) (the JavaScript library I used to render an interactive map) requires points in GeoJson format in order to render them on a map in a performant way (ie. through a Layer instead of Markers which are each individually a DOM element). I could do this data formatting conversion on the frontend but I decided to handle it on the backend so that my Spring API would simply return all its data in GeoJson.
+
+My solution was to create a new Serializable class called GeoJsonPoint with properties that mirror the format of a GeoJson feature; In such a way that when encoded to JSON, this class would be in GeoJSON format. Then in my FountainResource class, I wrote a oneliner to map each Fountain object to ea GeoJsonPoint. 
 
 ## How I handled localization
 
 Montreal est une ville 
+
+## Frontend
+
+...
