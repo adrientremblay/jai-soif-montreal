@@ -44,8 +44,12 @@ My solution was to create a new Serializable class called GeoJsonPoint with prop
 
 ## How I handled localization
 
-Montreal est une ville 
+Given that montreal is a billingual city (English and French), I wanted to configure the site so that everything would be acccessible in both languages, including the fountain data. There are certain columns in the database that need to be translated depending on the language. Namely: the columns for the place type and the notes. My first lazy thought was to use a translation file or external service to dynamically translate the contents of these fields from english to french as needed (ie. when a user clicks on a fountain and the details are displayed). I decided against this approach.
+
+Instead, 
 
 ## Frontend
 
+
+## Deployment
 ...
