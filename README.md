@@ -42,14 +42,22 @@ This issue was sidestepped by another issue. [Mapbox](https://www.mapbox.com/) (
 
 My solution was to create a new Serializable class called GeoJsonPoint with properties that mirror the format of a GeoJson feature; In such a way that when encoded to JSON, this class would be in GeoJSON format. Then in my FountainResource class, I wrote a oneliner to map each Fountain object to ea GeoJsonPoint. 
 
+## Frontend
+The frontend is a simple Angular app with one component It contains the mapbox map and the code that perform the API call to the backend and displays all fountains on the map.
+
 ## How I handled localization
 
 Given that montreal is a billingual city (English and French), I wanted to configure the site so that everything would be acccessible in both languages, including the fountain data. There are certain columns in the database that need to be translated depending on the language. Namely: the columns for the place type and the notes. My first lazy thought was to use a translation file or external service to dynamically translate the contents of these fields from english to french as needed (ie. when a user clicks on a fountain and the details are displayed). I decided against this approach.
 
-Instead, 
+Instead, I created two new columns for the french versions of the notes and place type and did a CSV import to populate them from the original french dataset. I then modified the schema in my Java spring application to include these columns and ultimately include them in the properties for each GeoJSON feature.
 
-## Frontend
+In my Angular application, i created a simple multiselect field for English and French and used [ngx-translate](https://github.com/ngx-translate/core) to handle automatically read from translation JSON files in i18n format and translate all portions of my website dynamically when the multiselect is changed. Translation files aren't massive dictionaries that specify the translations for individual words. Instead they are JSON objects where you organize all the individual text element that comprise your site. Then, instead of hard-coding text content in HTML files, you use ngx-translate to perform template injection - indicating what key you want to use.
 
+For the popupss that appear when the user clocks on individual fountains ont he map, I added an if-statement to check what language the user has selected and to diplay the appropriate language values for the notes and the place type fields.
 
 ## Deployment
-...
+Deployment was quite straightforward. I was able to save a dump file of my local database and import a copy on my VPS.
+
+The build my java spring application and configured a service to run it in the background.
+
+The only major issue I had was with my Angular build. It took me a while to figure out that "pre-rendering" (ie. Angular static site generation) was breaking the build and how to fully disable it. After my build was finally successfull all I had to do was copy the build files to my VPS and configure an Nginx site.
