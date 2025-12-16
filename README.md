@@ -1,32 +1,35 @@
 # J'ai Soif Montreal
-_A website that displays an interactive map of public drinking fountains on the island of Montreal, Canada._
+
+https://jaisoifmontreal.com/
+
+_A website that displays an interactive map of public drinking fountains on the island of Montreal, Canada. Users are able to click on any fountain and get details describing the water fountain._
 
 ## Architecture
 
 ![Architectural Diagram](jai_soif_montreal_architecture.jpg)
 
-I chose to build this application using a very corporate tech stack. Java Spring has been a popular backend web framework and scales very well which is why it's often used in a corporate setting. I chose to use a Postgresql database for my application instead of firebase or creating my own NoSQL database because SQL databases are popular in corporate settings and Postgresql is widely supported and open source. I chose to use Angular as the frontend framework as it is a popular corporate choice for applications due to its comrehensiveness.
+I chose to build this application using a very corporate tech stack. Java Spring has been a popular backend web framework and scales very well which is why it's often used in a corporate setting. I chose to use a Postgresql database for my application instead of something like Firebase or creating my own NoSQL database because SQL databases are popular in corporate settings and Postgresql is widely supported and open source. I chose to use Angular as the frontend framework as it is a popular corporate choice for applications due to its comrehensiveness.
 
 ## The Data
 
-The data was taken taken from the [city of Montreal's Donees Ouverts site](https://donnees.montreal.ca/dataset/fontaines-a-boire-eau-exterieures). The data is simply downloadable as a .CSV file (frustratingly some other "public" datasets from the city of Montreal are not likely due to privacy reasons). 
+The data was taken taken from the [city of Montreal's Donnée Ouverts site](https://donnees.montreal.ca/dataset/fontaines-a-boire-eau-exterieures). The data is simply downloadable as a .CSV file (frustratingly some other "public" datasets from the city of Montreal are not. Likely due to privacy reasons). 
 
 The dataset contains the following columns that had uable data:
-- borough
-- nearby park or place
-- type of place nearby
-- intersection
-- notes
-- longitude
-- lattitude
+- Borough
+- Nearby park or place
+- Type of place nearby
+- Intersection
+- Notes
+- Longitude
+- Lattitude
 
-The first things I did was manually translate the dataset from french to english using search and replace features. My intention wass to handle french localization later. I then enabled the [PostGIS](https://postgis.net/) extension for my Postgresql database because I wanted to store longitude and lattitude in once column. This didn't end up being super necessary as the app doesn't make use of any built in functions to for example calculate distances between points. I then used the COPYT command to import the data from the CSV file into a temporary table and then a permanent one with some extra fluff to combine the longitude and lattitude into the PostGIS Point column.
+The first things I did was manually translate the dataset from french to english using search and replace features. My intention was to handle french localization later. I then enabled the [PostGIS](https://postgis.net/) extension for my Postgresql database because I wanted to store longitude and lattitude in once column. This didn't end up being super necessary as the app doesn't make use of any built in functions to for example calculate distances between points. I then used the COPYT command to import the data from the CSV file into a temporary table and then a permanent one with some extra fluff to combine the longitude and lattitude into the PostGIS Point column.
 
 ## The Backend
 
-The backend is uper simple. Ultimately, the only API request I need to serve in the final application is one that returns data for all fountains in the system. Setting up requests to delete or insert records from the database is superflous. Even though, I eventually want to implement a form that allows users to submit fountains that will then only enter the database when I physically verify the existence of the water fountain in real life.
+The backend is uper simple. Ultimately, the only API request I need to serve in the final application is one that returns data for all fountains in the system. Setting up requests to delete or insert records from the database is superflous. Even though, I eventually want to implement a form that allows users to submit fountains that will then only enter the Fountain table when I physically verify the existence of the water fountain in real life.
 
-The key components of the application are:
+The key components of my Spring application are:
 - FountainResource (RestController)
 - FountainService (Service)
 - FountainRepo (implements JpaRepository)
@@ -36,9 +39,9 @@ So the Fountain class is a Spring Entity that has fields analagous to the table 
 
 ## Issues with points and GeoJSON mapping
 
-I had some issues with the JSON encoding for the coordinates for each water fountain. Ultimately the root cause of the issue was that the JsonEncoder library [JTS](https://locationtech.github.io/jts/javadoc/org/locationtech/jts/geom/Point.html). For reasons beyond my comprehension JTS does not support spacial points on a sphere (like the earth) only those on a plane. So my PostGIS column type for my coordinates was wrong in my database. I had to change it.
+I had some issues with the JSON encoding for the coordinates for each water fountain. Ultimately the root cause of the issue was that the JsonEncoder library [JTS](https://locationtech.github.io/jts/javadoc/org/locationtech/jts/geom/Point.html). For reasons beyond my wordly comprehension, JTS does not support spacial points on a sphere (like the earth) only those on a plane. So my PostGIS column type for my coordinates was wrong in my database. I had to change it.
 
-This issue was sidestepped by another issue. [Mapbox](https://www.mapbox.com/) (the JavaScript library I used to render an interactive map) requires points in GeoJson format in order to render them on a map in a performant way (ie. through a Layer instead of Markers which are each individually a DOM element). I could do this data formatting conversion on the frontend but I decided to handle it on the backend so that my Spring API would simply return all its data in GeoJson.
+This issue was sidestepped by another issue. [Mapbox](https://www.mapbox.com/) (the JavaScript library I used to render an interactive map on the frontend web app for my site) requires points in GeoJson format in order to render them on a map in a performant way (ie. through a Layer instead of Markers which are each individually a DOM element). I could do this data formatting conversion on the frontend but I decided to handle it on the backend so that my Spring API would simply return all its data as a giant GeoJson 'Feature' list.
 
 My solution was to create a new Serializable class called GeoJsonPoint with properties that mirror the format of a GeoJson feature; In such a way that when encoded to JSON, this class would be in GeoJSON format. Then in my FountainResource class, I wrote a oneliner to map each Fountain object to ea GeoJsonPoint. 
 
@@ -47,17 +50,17 @@ The frontend is a simple Angular app with one component It contains the mapbox m
 
 ## How I handled localization
 
-Given that montreal is a billingual city (English and French), I wanted to configure the site so that everything would be acccessible in both languages, including the fountain data. There are certain columns in the database that need to be translated depending on the language. Namely: the columns for the place type and the notes. My first lazy thought was to use a translation file or external service to dynamically translate the contents of these fields from english to french as needed (ie. when a user clicks on a fountain and the details are displayed). I decided against this approach.
+Given that Montreal is a billingual city (English and French), I wanted to configure the site so that everything would be acccessible in both languages, including the fountain data. There are certain columns in the database that need to be translated depending on the language. Namely: the columns for the place type and the notes. My first lazy thought was to use an external service to dynamically translate the contents of these fields from english to french as needed (ie. when a user clicks on a fountain and the details are displayed). I decided against this approach.
 
 Instead, I created two new columns for the french versions of the notes and place type and did a CSV import to populate them from the original french dataset. I then modified the schema in my Java spring application to include these columns and ultimately include them in the properties for each GeoJSON feature.
 
-In my Angular application, i created a simple multiselect field for English and French and used [ngx-translate](https://github.com/ngx-translate/core) to handle automatically read from translation JSON files in i18n format and translate all portions of my website dynamically when the multiselect is changed. Translation files aren't massive dictionaries that specify the translations for individual words. Instead they are JSON objects where you organize all the individual text element that comprise your site. Then, instead of hard-coding text content in HTML files, you use ngx-translate to perform template injection - indicating what key you want to use.
+In my Angular application, i created a simple multiselect field for English and French and used [ngx-translate](https://github.com/ngx-translate/core) to handle automatically read from translation JSON files in i18n format and translate all portions of my website dynamically when the multiselect is changed. Translation files aren't massive dictionaries that specify the translations for individual words. Instead they are JSON objects where you organize all the individual text element that comprise your site. Then, instead of hard-coding text content in HTML files, you use ngx-translate to perform template injection - indicating what key you want to use from either JSON translation file.
 
-For the popupss that appear when the user clocks on individual fountains ont he map, I added an if-statement to check what language the user has selected and to diplay the appropriate language values for the notes and the place type fields.
+For the popups that appear when the user clocks on individual fountains on the map, I added an if-statement to check what language the user has selected and to diplay the appropriate language values for the notes and the place type fields.
 
 ## Deployment
 Deployment was quite straightforward. I was able to save a dump file of my local database and import a copy on my VPS.
 
-The build my java spring application and configured a service to run it in the background.
+I then built my Java Spring application as a jar, moved it to my VPS, and configured a service to run it in the background.
 
 The only major issue I had was with my Angular build. It took me a while to figure out that "pre-rendering" (ie. Angular static site generation) was breaking the build and how to fully disable it. After my build was finally successfull all I had to do was copy the build files to my VPS and configure an Nginx site.
